@@ -14,7 +14,7 @@ namespace WebApplication3.Pages
         private SignInManager<ApplicationUser> signInManager { get; }
 
         [BindProperty]
-        public Register RModel { get; set; }
+        public Register RegisterM { get; set; }
 
         public RegisterModel(UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager)
@@ -32,29 +32,29 @@ namespace WebApplication3.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (RModel.Password != RModel.ConfirmPassword)
+            if (RegisterM.Password != RegisterM.ConfirmPassword)
             {
-                ModelState.AddModelError("RModel.ConfirmPassword", "The password and confirm password do not match.");
+                ModelState.AddModelError("RegisterM.ConfirmPassword", "The password and confirm password do not match.");
             }
             if (ModelState.IsValid)
             {
                 var dataProtectionProvider =DataProtectionProvider.Create("EncryptData");
                 var protector = dataProtectionProvider.CreateProtector("MySecretKey");
                 var user = new ApplicationUser()
-                {
-                    UserName = RModel.Email,
-                    Email = RModel.Email,
-                    FullName = RModel.FullName,
-                    CreditCard = protector.Protect(RModel.CreditCard),
-                    Gender = RModel.Gender,
-                    MobileNumber = RModel.MobileNumber,
-                    Password = protector.Protect(RModel.Password),
-                    ConfirmPassword = protector.Protect(RModel.ConfirmPassword),
-                    DeliveryAddress = RModel.DeliveryAddress,
-                    AboutMe = RModel.AboutMe
+                {   
+                    UserName = RegisterM.Email,
+                    Email = RegisterM.Email,
+                    FullName = RegisterM.FullName,
+                    CreditCard = protector.Protect(RegisterM.CreditCard),
+                    Gender = RegisterM.Gender,
+                    MobileNumber = RegisterM.MobileNumber,
+                    Password = protector.Protect(RegisterM.Password),
+                    ConfirmPassword = protector.Protect(RegisterM.ConfirmPassword),
+                    DeliveryAddress = RegisterM.DeliveryAddress,
+                    AboutMe = RegisterM.AboutMe
 
                 };
-                var result = await userManager.CreateAsync(user, RModel.Password);
+                var result = await userManager.CreateAsync(user, RegisterM.Password);
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);

@@ -8,12 +8,15 @@ namespace WebApplication3.Pages
 {
     public class LoginModel : PageModel
     {
+         
         private readonly SignInManager<ApplicationUser> signInManager;
         public LoginModel(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
 		}
-        public Login LModel { get; set; }
+        
+        [BindProperty]  
+        public Login LoginM { get; set; }
 
 		public void OnGet()
         {
@@ -23,8 +26,8 @@ namespace WebApplication3.Pages
         {   
             if (ModelState.IsValid)
             {
-                var identityResult = await signInManager.PasswordSignInAsync(LModel.Email, LModel.Password,
-               LModel.RememberMe, false);
+                var identityResult = await signInManager.PasswordSignInAsync(LoginM.Email, LoginM.Password,
+               LoginM.RememberMe, false);
                 if (identityResult.Succeeded)
                 {
                     return RedirectToPage("Index");

@@ -44,6 +44,9 @@ namespace WebApplication3.ViewModels
 		[DataType(DataType.Password)]
 		public string ConfirmPassword { get; set; }
 
+		[Required]
+        [DataType(DataType.Upload)]
+        public IFormFile? ImageJPG { get; set; }
 
 		public string AboutMe { get; set; }
 
