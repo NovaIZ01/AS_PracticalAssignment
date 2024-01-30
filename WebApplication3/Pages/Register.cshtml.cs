@@ -32,10 +32,6 @@ namespace WebApplication3.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (RegisterM.Password != RegisterM.ConfirmPassword)
-            {
-                ModelState.AddModelError("RegisterM.ConfirmPassword", "The password and confirm password do not match.");
-            }
             if (ModelState.IsValid)
             {
                 var dataProtectionProvider =DataProtectionProvider.Create("EncryptData");

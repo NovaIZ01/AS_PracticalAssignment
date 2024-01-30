@@ -37,12 +37,14 @@ namespace WebApplication3.ViewModels
 		public string Email { get; set; }
 		[Required]
         [DataType(DataType.Password)]
+
         [RegularExpression(@"^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,})\S$", 
 		ErrorMessage = "Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
         public string Password { get; set; }
 		[Required]
 		[DataType(DataType.Password)]
-		public string ConfirmPassword { get; set; }
+        [Compare(nameof(Password), ErrorMessage = "Password and confirmation password does not match")]
+        public string ConfirmPassword { get; set; }
 
 		[Required]
         [DataType(DataType.Upload)]

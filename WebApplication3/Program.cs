@@ -9,7 +9,15 @@ builder.Services.AddDbContext<AuthDbContext>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
 builder.Services.AddDataProtection();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+});
 
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/login";
+});
 
 var app = builder.Build();
 
@@ -27,6 +35,7 @@ app.UseStaticFiles();
 app.UseStatusCodePagesWithRedirects("/errors/{0}");
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();
