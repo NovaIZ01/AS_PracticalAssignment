@@ -7,7 +7,7 @@ namespace WebApplication3.ViewModels
     {
 		[Required]
 		[DataType(DataType.Text)]
-		public string FullName { get; set; }
+        public string FullName { get; set; }
 
 		[Required]
 		[DataType(DataType.CreditCard)]
@@ -46,10 +46,10 @@ namespace WebApplication3.ViewModels
         [Compare(nameof(Password), ErrorMessage = "Password and confirmation password does not match")]
         public string ConfirmPassword { get; set; }
 
+		//[Required]
+  //      [DataType(DataType.Upload)]
+  //      public IFormFile? ImageJPG { get; set; }
 		[Required]
-        [DataType(DataType.Upload)]
-        public IFormFile? ImageJPG { get; set; }
-
 		public string AboutMe { get; set; }
 
 	}

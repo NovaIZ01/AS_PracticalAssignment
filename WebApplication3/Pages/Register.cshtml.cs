@@ -31,7 +31,7 @@ namespace WebApplication3.Pages
 
 
         public async Task<IActionResult> OnPostAsync()
-        {
+        {   
             if (ModelState.IsValid)
             {
                 var dataProtectionProvider =DataProtectionProvider.Create("EncryptData");
