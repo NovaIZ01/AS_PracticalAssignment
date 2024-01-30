@@ -30,9 +30,9 @@ namespace WebApplication3.Pages
         }
 
 
-        public async Task<IActionResult> OnRegisterAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (RModel.ConfirmPassword != RModel.Password)
+            if (RModel.Password != RModel.ConfirmPassword)
             {
                 ModelState.AddModelError("RModel.ConfirmPassword", "The password and confirm password do not match.");
             }
@@ -49,19 +49,21 @@ namespace WebApplication3.Pages
                     Gender = RModel.Gender,
                     MobileNumber = RModel.MobileNumber,
                     Password = protector.Protect(RModel.Password),
+                    ConfirmPassword = protector.Protect(RModel.ConfirmPassword),
                     DeliveryAddress = RModel.DeliveryAddress,
                     AboutMe = RModel.AboutMe
+
                 };
                 var result = await userManager.CreateAsync(user, RModel.Password);
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);
+                    
                     return RedirectToPage("Index");
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
-                    return RedirectToPage("Index");
                 }
             }
             return Page();
