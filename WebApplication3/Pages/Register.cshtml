@@ -82,19 +82,17 @@
 			document.getElementById("passwordError").innerHTML = "Your Password needs to be at least 12 Characters";
 			document.getElementById("passwordError").style.color = "Red";
 		}
-
-		else if (!/[A-Z]/.test(PasswordChecker)) {
-			document.getElementById("passwordError").innerHTML = "Your Password needs to have at least ONE Uppercase Letter";
-			document.getElementById("passwordError").style.color = "Red";
-		}
-
 		else if (!/[a-z]/.test(PasswordChecker)) {
 			document.getElementById("passwordError").innerHTML = "Your Password needs to have at least ONE Lowercase Letter";
 			document.getElementById("passwordError").style.color = "Red";
 		}
-
 		else if (!/\d/.test(PasswordChecker)) {
-			document.getElementById("passwordError").innerHTML = "Your Password needs to have at least ONE Digit";
+					document.getElementById("passwordError").innerHTML = "Your Password needs to have at least ONE Digit";
+					document.getElementById("passwordError").style.color = "Red";
+		}
+
+		else if (!/[A-Z]/.test(PasswordChecker)) {
+			document.getElementById("passwordError").innerHTML = "Your Password needs to have at least ONE Uppercase Letter";
 			document.getElementById("passwordError").style.color = "Red";
 		}
 
