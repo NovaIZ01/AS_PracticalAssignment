@@ -78,7 +78,6 @@ namespace WebApplication3.Pages
 
 			ViewData["Email"] = email;
 			ViewData["Password"] = password;
-			logger.LogInformation(email + password);
 
 			return Page();
 		}
