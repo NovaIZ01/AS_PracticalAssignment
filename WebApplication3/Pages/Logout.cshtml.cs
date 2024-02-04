@@ -21,10 +21,11 @@ namespace WebApplication3.Pages
         public void OnGet() { }
         public async Task<IActionResult> OnPostLogoutAsync()
         {
+            
             await signInManager.SignOutAsync();
             contxt.HttpContext.Session.Clear();
-            contxt.HttpContext.Session.Remove("UserId");
-            contxt.HttpContext.Session.Remove("UserName");
+            contxt.HttpContext.Session.Remove("Email");
+            contxt.HttpContext.Session.Remove("Password");
             contxt.HttpContext.Session.Remove("SessionIdentifier");
             Response.Cookies.Delete("AToken");
             contxt.HttpContext.Session.Remove("IsLoggedIn");

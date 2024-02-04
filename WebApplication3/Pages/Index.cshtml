@@ -7,8 +7,12 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <ul>
-        <li> Email: @contxt.HttpContext.Session.GetString("Email")</li>
-        <li> Password: @contxt.HttpContext.Session.GetString("Password")</li>
-    </ul>
+    
+        <p> Email: @contxt.HttpContext.Session.GetString("Email")</p>
+        <p>Gender: @Model.Gender</p>
+        <p>Mobile Number: @Model.MobileNumber</p>
+        <p>Delivery Address: @Model.DeliveryAddress</p>
+        <p>CreditCard : @Model.CreditCard</p>
+        <p>About Me: @Model.AboutMe</p>
+    
 </div>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace WebApplication3.ViewModels
 {
@@ -46,11 +47,12 @@ namespace WebApplication3.ViewModels
         [Compare(nameof(Password), ErrorMessage = "Password and confirmation password does not match")]
         public string ConfirmPassword { get; set; }
 
-		//[Required]
-  //      [DataType(DataType.Upload)]
-  //      public IFormFile? ImageJPG { get; set; }
+
 		[Required]
 		public string AboutMe { get; set; }
 
-	}
+
+    }
+
+
 }

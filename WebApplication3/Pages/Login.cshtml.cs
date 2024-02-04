@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging; // Add this import for ILogger
 using System;
 using WebApplication3.Model;
 using WebApplication3.ViewModels;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication3.Pages
 {
@@ -13,18 +15,20 @@ namespace WebApplication3.Pages
     {
         private readonly IHttpContextAccessor contxt;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly ILogger<LoginModel> logger; // Add ILogger
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, IHttpContextAccessor httpContextAccessor, ILogger<LoginModel> logger)
+        private readonly ILogger<LoginModel> logger;
+        public LoginModel(SignInManager<ApplicationUser> signInManager, IHttpContextAccessor httpContextAccessor, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
         {
             contxt = httpContextAccessor;
             this.signInManager = signInManager;
+            this.userManager = userManager;
             this.logger = logger;
         }
 
         [BindProperty]
         public Login LoginM { get; set; }
-
+        public Register RegisterM { get; set; }
         public void OnGet()
         {
             logger.LogInformation("OnGet method called");
@@ -33,18 +37,18 @@ namespace WebApplication3.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             logger.LogInformation("OnPostAsync method called");
-
+            
             if (ModelState.IsValid)
-            {
-                var identityResult = await signInManager.PasswordSignInAsync(LoginM.Email, LoginM.Password, LoginM.RememberMe, false);
+            {   
+                var identityResult = await signInManager.PasswordSignInAsync(LoginM.Email, LoginM.Password, LoginM.RememberMe, true);
                 if (identityResult.Succeeded)
                 {
                     contxt.HttpContext.Session.SetString("isLoggedIn", LoginM.Email);
                     string GUID = Guid.NewGuid().ToString();
                     contxt.HttpContext.Session.SetString("AToken", GUID);
                     Response.Cookies.Append("AToken", GUID);
-
-                    logger.LogInformation($"User {LoginM.Email} successfully logged in.");
+                    contxt.HttpContext.Session.SetString("Email", LoginM.Email);
+                    contxt.HttpContext.Session.SetString("Password",LoginM.Password);
 
                     if (contxt.HttpContext.Session.GetString("isLoggedIn") != null && Request.Cookies["AToken"] != null)
                     {
@@ -57,16 +61,31 @@ namespace WebApplication3.Pages
 
                     logger.LogInformation("Redirecting to Index page.");
                     Response.Redirect("Index", false);
+                    var user = await userManager.FindByEmailAsync(LoginM.Email);
+                    if (user != null && await userManager.IsLockedOutAsync(user))
+                    {
+                        ModelState.AddModelError("LoginM.Email", "Account locked. Please try again later.");
+                        return Page();
+                    }
+                    
                 }
+                else if (identityResult.IsLockedOut)
+                    {
+                        ModelState.AddModelError("LoginM.Email", "Account has been locked out");
+                        ViewData["Error"] = "Account has been locked out";
+                        return Page();
+					}
                 else
                 {
-                    logger.LogError($"Login failed for user {LoginM.Email}. Username or Password incorrect.");
-                    ModelState.AddModelError("", "Username or Password incorrect");
-                }
+					ViewData["Error"] = "Email or Password incorrect";
+                    
+
+				}
             }
             else
             {
                 logger.LogWarning("ModelState is not valid.");
+                ViewData["Error"] = "Please Enter a Email or Password";
             }
 
             return Page();

@@ -1,10 +1,9 @@
 ﻿@page
 @inject IHttpContextAccessor contxt;
 @model WebApplication3.Pages.LoginModel
-@{
-								
-	
-}<div class="container mt-5">
+@{	
+}
+ <div class="container mt-5">
 
     <div class="row justify-content-center align-items-center">
 
@@ -29,7 +28,14 @@
                     <input type="checkbox" asp-for="LoginM.RememberMe" class="form-check-input" />
                     <label class="form-check-label" asp-for="LoginM.RememberMe">Remember Me?</label>
                 </div>
-
+                <div>
+                    @if (!string.IsNullOrEmpty(ViewData["Error"] as string)){
+                    <div class="alert-danger">
+                    @ViewData["Error"] 
+                    </div>
+                    }
+                </div>
+                <br />
                 <div class="mb-3">
                     <button type="submit"
                             class="btn btn-primary">
