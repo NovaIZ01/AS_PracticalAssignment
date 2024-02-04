@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging; // Add this import for ILogger
+using Microsoft.Extensions.Logging;
 using System;
 using WebApplication3.Model;
 using WebApplication3.ViewModels;
@@ -42,7 +42,7 @@ namespace WebApplication3.Pages
             {   
                 var identityResult = await signInManager.PasswordSignInAsync(LoginM.Email, LoginM.Password, LoginM.RememberMe, true);
                 if (identityResult.Succeeded)
-                {
+                {   
                     contxt.HttpContext.Session.SetString("isLoggedIn", LoginM.Email);
                     string GUID = Guid.NewGuid().ToString();
                     contxt.HttpContext.Session.SetString("AToken", GUID);
@@ -58,7 +58,7 @@ namespace WebApplication3.Pages
                             Response.Redirect("Login", false);
                         }
                     }
-
+                
                     logger.LogInformation("Redirecting to Index page.");
                     Response.Redirect("Index", false);
                     var user = await userManager.FindByEmailAsync(LoginM.Email);
